@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  annotations:
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true" #permanent redirect
+    ingress.kubernetes.io/protocol: http #ssl termination, temprary redirect
+    ingress.kubernetes.io/protocol: https
+spec:
+  defaultBackend: # if page not  found, then /test
+    service:
+      name: nginx
+      port:
+        number: 80
+  rules:
+    - host: b9tcluster.ir 
+      http:
+        paths:
+          #          - path: /test
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80 
+  tls:
+    - hosts:
+      - b9tcluster.ir
+      secretName: b9tcluster.ir
