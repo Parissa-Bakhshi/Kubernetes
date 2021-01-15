@@ -1,0 +1,5 @@
+kubectl expose deployment minio --port=8000 --type=NodePort
+kubectl create secret generic minio-secret --from-literal=MINIO_ROOT_USER="1234567890" --from-literal="MINIO_ROOT_PASSWORD"="1234567890"
+kubectl apply -f minio.yaml 
+kubectl create configmap test-config --from-file=test=test
+kubectl create configmap test-config --from-file=test=test

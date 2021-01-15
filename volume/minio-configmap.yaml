@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: minio
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio
+          args: ["minio", "server", "/opt"]
+          envFrom:
+            - secretRef:
+                name: minio-secret
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - name: mydata
+              mountPath: /data
+      volumes:
+        - name: mydata
+          configMap:
+            name: test-config
